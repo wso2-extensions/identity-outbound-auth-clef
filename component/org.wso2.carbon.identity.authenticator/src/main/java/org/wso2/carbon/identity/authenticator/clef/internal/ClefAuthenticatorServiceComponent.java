@@ -28,7 +28,7 @@ import org.wso2.carbon.identity.authenticator.clef.ClefAuthenticator;
 import java.util.Hashtable;
 
 /**
- * @scr.component name="identity.application.authenticator.linkedIn.component" immediate="true"
+ * @scr.component name="identity.application.authenticator.clef.component" immediate="true"
  */
 public class ClefAuthenticatorServiceComponent {
 

@@ -1,4 +1,4 @@
-Product: WSO2 IS authenticator for linkedIn
+Product: WSO2 IS authenticator for clef
 Pre-requisites:
 
 - Maven 3.x
