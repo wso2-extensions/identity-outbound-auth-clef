@@ -33,7 +33,6 @@ import org.apache.oltu.oauth2.common.message.types.GrantType;
 import org.apache.oltu.oauth2.common.utils.JSONUtils;
 import org.wso2.carbon.identity.application.authentication.framework.FederatedApplicationAuthenticator;
 import org.wso2.carbon.identity.application.authentication.framework.LocalApplicationAuthenticator;
-import org.wso2.carbon.identity.application.authentication.framework.config.ConfigurationFacade;
 import org.wso2.carbon.identity.application.authentication.framework.config.model.StepConfig;
 import org.wso2.carbon.identity.application.authentication.framework.context.AuthenticationContext;
 import org.wso2.carbon.identity.application.authentication.framework.exception.AuthenticationFailedException;
@@ -168,34 +167,38 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      */
     @Override
     protected void initiateAuthenticationRequest(HttpServletRequest httpServletRequest,
-                                                 HttpServletResponse httpServletResponse, AuthenticationContext authenticationContext)
+                                                 HttpServletResponse httpServletResponse,
+                                                 AuthenticationContext authenticationContext)
             throws AuthenticationFailedException {
         AuthenticatedUser authenticatedUser = getUsername(authenticationContext);
         String username = authenticatedUser.getAuthenticatedSubjectIdentifier();
-        String ClefUserId;
-        String RequestYType;
+        String clefUserId;
+        String requestType;
         try {
             UserStoreManager userStoreManager = getUserStoreManager(authenticationContext);
-            ClefUserId = userStoreManager.getUserClaimValue(username,
+            clefUserId = userStoreManager.getUserClaimValue(username,
                     ClefAuthenticatorConstants.CLEF_ID, null);
-            if (StringUtils.isEmpty(ClefUserId)) {
-                RequestYType = ClefAuthenticatorConstants.LOGIN;
+            if (StringUtils.isEmpty(clefUserId)) {
+                requestType = ClefAuthenticatorConstants.LOGIN;
             } else {
-                RequestYType = ClefAuthenticatorConstants.CONNECT;
+                requestType = ClefAuthenticatorConstants.CONNECT;
             }
-            String loginPage = ConfigurationFacade.getInstance().getAuthenticationEndpointURL()
-                    .replace(ClefAuthenticatorConstants.LOGIN_PAGE, ClefAuthenticatorConstants.CLEF_PAGE);
-            String queryParams = FrameworkUtils.getQueryStringWithFrameworkContextId(authenticationContext
-                    .getQueryParams(), authenticationContext.getCallerSessionKey(), authenticationContext
-                    .getContextIdentifier());
-            httpServletResponse.sendRedirect(httpServletResponse.encodeRedirectURL(loginPage + ("?"
-                    + queryParams + "&" + OIDCAuthenticatorConstants.CLIENT_ID + "="
-                    + authenticationContext.getAuthenticatorProperties().get(OIDCAuthenticatorConstants.CLIENT_ID))
-                    + "&" + ClefAuthenticatorConstants.REQUEST_TYPE + "=" + RequestYType));
+            String clefLoginPage = ClefAuthenticatorConstants.CLEF_OAUTH_ENDPOINT;
+            String queryParams = FrameworkUtils
+                    .getQueryStringWithFrameworkContextId(authenticationContext.getQueryParams(),
+                            authenticationContext.getCallerSessionKey(), authenticationContext
+                                    .getContextIdentifier());
+            httpServletResponse.sendRedirect(httpServletResponse.encodeRedirectURL(clefLoginPage
+                    + ("?" + queryParams + "&" + OIDCAuthenticatorConstants.CLIENT_ID + "="
+                    + authenticationContext.getAuthenticatorProperties().get(OIDCAuthenticatorConstants
+                    .CLIENT_ID)) + "&" + ClefAuthenticatorConstants.REQUEST_TYPE + "=" + requestType));
+            if (log.isDebugEnabled()) {
+                log.debug("Request send to " + clefLoginPage);
+            }
             authenticationContext.setCurrentAuthenticator(getName());
         } catch (UserStoreException e) {
-            throw new AuthenticationFailedException(
-                    "Error occured while loading user claim - http://wso2.org/claims/ClefId", e);
+            throw new AuthenticationFailedException("Error occured while loading user claim - "
+                    + ClefAuthenticatorConstants.CLEF_ID, e);
         } catch (IOException e) {
             throw new AuthenticationFailedException(e.getMessage(), e);
         }
@@ -210,7 +213,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @throws AuthenticationFailedException
      */
     @Override
-    protected void processAuthenticationResponse(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+    protected void processAuthenticationResponse(HttpServletRequest httpServletRequest,
+                                                 HttpServletResponse httpServletResponse,
                                                  AuthenticationContext authenticationContext)
             throws AuthenticationFailedException {
         Map<String, String> authenticatorProperties = authenticationContext.getAuthenticatorProperties();
@@ -225,8 +229,12 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
         String ClefUserId;
         String accessToken;
         try {
-            OAuthAuthzResponse authzResponse = OAuthAuthzResponse.oauthCodeAuthzResponse(httpServletRequest);
-            String code = authzResponse.getCode();
+            OAuthAuthzResponse authResponse = OAuthAuthzResponse
+                    .oauthCodeAuthzResponse(httpServletRequest);
+            String code = authResponse.getCode();
+            if (log.isDebugEnabled()) {
+                log.debug("Code received from clef");
+            }
             OAuthClientRequest accessRequest = OAuthClientRequest
                     .tokenLocation(tokenEndPoint)
                     .setGrantType(GrantType.AUTHORIZATION_CODE)
@@ -237,16 +245,14 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
                     .buildBodyMessage();
             oAuthResponse = oAuthClient.accessToken(accessRequest);
             accessToken = oAuthResponse.getParam(ClefAuthenticatorConstants.ACCESS_TOKEN);
+            if (log.isDebugEnabled()) {
+                log.debug("Access token received");
+            }
         } catch (OAuthSystemException e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception while building request for request access token", e);
-            }
-            throw new AuthenticationFailedException(e.getMessage(), e);
+            throw new AuthenticationFailedException(
+                    "Exception while building request for request access token", e);
         } catch (OAuthProblemException e) {
-            if (log.isDebugEnabled()) {
-                log.debug("Exception while requesting code", e);
-            }
-            throw new AuthenticationFailedException(e.getMessage(), e);
+            throw new AuthenticationFailedException("Exception while requesting code", e);
         }
         if (!StringUtils.isEmpty(accessToken)) {
             Map<String, Object> userClaims = getUserClaims(oAuthResponse);
@@ -265,9 +271,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
                         allowUser(userClaims, authenticationContext);
                     }
                 } catch (UserStoreException e) {
-                    // this exception will be handled by the framework.
                     throw new AuthenticationFailedException(
-                            "Error occured while loading user claim - ClefId", e);
+                            "Error occurred while loading user claim - ClefId", e);
                 }
             } else {
                 throw new AuthenticationFailedException("Selected user profile not found");
@@ -283,7 +288,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @param userClaims            user claims
      * @param authenticationContext authentication context
      */
-    protected void allowUser(Map<String, Object> userClaims, AuthenticationContext authenticationContext) {
+    private void allowUser(Map<String, Object> userClaims, AuthenticationContext authenticationContext) {
         AuthenticatedUser authenticatedUserObj;
         Map<ClaimMapping, String> claims;
         authenticatedUserObj = AuthenticatedUser
@@ -303,11 +308,14 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @param oAuthClientResponse oAuthResponse contain access token
      * @return user info
      */
-    protected Map<String, Object> getUserClaims(OAuthClientResponse oAuthClientResponse) {
+    private Map<String, Object> getUserClaims(OAuthClientResponse oAuthClientResponse) {
         try {
             String json = sendRequest(
                     ClefAuthenticatorConstants.CLEF_USERINFO_ENDPOINT,
                     oAuthClientResponse.getParam(ClefAuthenticatorConstants.ACCESS_TOKEN));
+            if (log.isDebugEnabled()) {
+                log.debug("User info received from  " + ClefAuthenticatorConstants.CLEF_USERINFO_ENDPOINT);
+            }
             Map<String, Object> jsonObject = JSONUtils.parseJSON(json);
             Map<String, Object> jsonInfoObject = JSONUtils.parseJSON(String
                     .valueOf(jsonObject.get(ClefAuthenticatorConstants.USER_INFO)));
@@ -324,7 +332,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @param claimMap Map<String, Object>
      * @return attributes
      */
-    protected Map<ClaimMapping, String> getSubjectAttributes(Map<String, Object> claimMap) {
+    private Map<ClaimMapping, String> getSubjectAttributes(Map<String, Object> claimMap) {
         Map<ClaimMapping, String> claims = new HashMap<>();
         if (claimMap != null) {
             for (Map.Entry<String, Object> entry : claimMap.entrySet()) {
@@ -346,7 +354,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @return user store manager
      * @throws AuthenticationFailedException
      */
-    protected UserStoreManager getUserStoreManager(AuthenticationContext authenticationContext)
+    private UserStoreManager getUserStoreManager(AuthenticationContext authenticationContext)
             throws AuthenticationFailedException {
         AuthenticatedUser authenticatedUser = getUsername(authenticationContext);
         String tenantDomain;
@@ -359,11 +367,9 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             userRealm = realmService.getTenantUserRealm(tenantId);
             userStoreManager = (UserStoreManager) userRealm.getUserStoreManager();
         } catch (org.wso2.carbon.user.core.UserStoreException e) {
-            // this exception will be handled by the framework.
             throw new AuthenticationFailedException(
                     "Error occured while loading user claim - http://wso2.org/claims/ClefId", e);
         } catch (UserStoreException e) {
-            // this exception will be handled by the framework.
             throw new AuthenticationFailedException(
                     "Error occured while loading userrealm/userstoremanager", e);
         }
@@ -378,7 +384,6 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @throws AuthenticationFailedException
      */
     private AuthenticatedUser getUsername(AuthenticationContext authenticationContext) {
-        // username from authentication context.
         AuthenticatedUser authenticatedUser = null;
         for (int i = 1; i <= authenticationContext.getSequenceConfig().getStepMap().size(); i++) {
             StepConfig stepConfig = authenticationContext.getSequenceConfig().getStepMap().get(i);

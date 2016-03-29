@@ -19,10 +19,10 @@
 
 package org.wso2.carbon.identity.authenticator.clef;
 
-public class ClefAuthenticatorConstants {
+class ClefAuthenticatorConstants {
     public static final String AUTHENTICATOR_NAME = "ClefAuthenticator";
     public static final String AUTHENTICATOR_FRIENDLY_NAME = "clef";
-    public static final String CLEF_OAUTH_ENDPOINT = "https://localhost:9443/ClefEndPoint?";
+    public static final String CLEF_OAUTH_ENDPOINT = "https://localhost:9443/authenticationendpoint/ClefEndPoint.jsp";
     public static final String CLEF_TOKEN_ENDPOINT = "https://clef.io/api/v1/authorize";
     public static final String CLEF_USERINFO_ENDPOINT = "https://clef.io/api/v1/info";
     public static final String SESSION_DATA_KEY = "sessionDataKey";
@@ -39,6 +39,4 @@ public class ClefAuthenticatorConstants {
     public static final String LOGIN = "login";
     public static final String CONNECT = "connect";
     public static final String DEFAULT="Default";
-    public static final String LOGIN_PAGE="login.do";
-    public static final String CLEF_PAGE="ClefEndPoint.jsp";
 }
