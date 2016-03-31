@@ -34,7 +34,7 @@ class ClefAuthenticatorConstants {
     public static final String ID = "id";
     public static final String LAST_NAME = "last_name";
     public static final String USER_INFO = "info";
-    public static final String CLEF_ID = "http://wso2.org/claims/ClefId";
+    public static final String CLEF_ID = "http://wso2.org/claims/clefId";
     public static final String REQUEST_TYPE = "Request_type";
     public static final String LOGIN = "login";
     public static final String CONNECT = "connect";

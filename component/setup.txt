@@ -18,4 +18,14 @@ Do the following:
 
 3. Place clefauthenticationendpoint war into <IS_HOME>/repository/deployment/server/webapps.
 
-3. Start the IS server and create Identity provider and service provider in IS via the IS console.
+4. Add a cliammapping for ClefId with mapping to any string attribute eg(eg:nickName)
+
+                Description	       ClefId of user
+                Claim Uri	       http://wso2.org/claims/clefId
+                Mapped Attribute       nickName
+                Regular Expression     null
+                Display Order	       0
+                Supported by Default   false
+                Required	       false
+
+5. Start the IS server and create Identity provider and service provider in IS via the IS console.
