@@ -227,7 +227,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
         OAuthClientResponse oAuthResponse;
         AuthenticatedUser authenticatedUser = getUsername(authenticationContext);
         String username = authenticatedUser.getAuthenticatedSubjectIdentifier();
-        String ClefUserId;
+        String clefUserId;
         String accessToken;
         try {
             OAuthAuthzResponse authResponse = OAuthAuthzResponse.oauthCodeAuthzResponse(httpServletRequest);
@@ -258,11 +258,11 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             if (userClaims != null && !userClaims.isEmpty()) {
                 try {
                     UserStoreManager userStoreManager = getUserStoreManager(authenticationContext);
-                    ClefUserId = userStoreManager.getUserClaimValue(username, ClefAuthenticatorConstants.CLEF_ID, null);
-                    if (!StringUtils.isEmpty(ClefUserId) && ClefUserId.equals(String
+                    clefUserId = userStoreManager.getUserClaimValue(username, ClefAuthenticatorConstants.CLEF_ID, null);
+                    if (!StringUtils.isEmpty(clefUserId) && clefUserId.equals(String
                             .valueOf(userClaims.get(ClefAuthenticatorConstants.ID)))) {
                         allowUser(userClaims, authenticationContext);
-                    } else if (StringUtils.isEmpty(ClefUserId)) {
+                    } else if (StringUtils.isEmpty(clefUserId)) {
                         userStoreManager.setUserClaimValue(username, ClefAuthenticatorConstants.CLEF_ID, String.
                                         valueOf(userClaims.get(ClefAuthenticatorConstants.ID)),
                                 ClefAuthenticatorConstants.DEFAULT);
