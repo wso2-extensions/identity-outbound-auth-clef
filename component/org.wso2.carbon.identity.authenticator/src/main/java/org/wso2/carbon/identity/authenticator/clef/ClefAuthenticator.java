@@ -148,7 +148,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
         configProperties.add(clientSecret);
 
         Property callbackUrl = new Property();
-        callbackUrl.setDisplayName(ClefAuthenticatorConstants.Callback_URL);
+        callbackUrl.setDisplayName(ClefAuthenticatorConstants.CALLBACK_URL);
         callbackUrl.setName(IdentityApplicationConstants.OAuth2.CALLBACK_URL);
         callbackUrl.setDescription("Enter the callback url");
         callbackUrl.setDisplayOrder(2);

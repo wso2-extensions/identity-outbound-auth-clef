@@ -27,7 +27,7 @@ class ClefAuthenticatorConstants {
     public static final String CLEF_USERINFO_ENDPOINT = "https://clef.io/api/v1/info";
     public static final String SESSION_DATA_KEY = "sessionDataKey";
     public static final String CLIENT_ID = "Client ID";
-    public static final String Callback_URL = "Callback URL";
+    public static final String CALLBACK_URL = "Callback URL";
     public static final String CLIENT_SECRET = "Client Secret";
     public static final String CODE = "code";
     public static final String ACCESS_TOKEN = "access_token";
