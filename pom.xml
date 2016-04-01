@@ -26,7 +26,7 @@
         <version>1</version>
     </parent>
     <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
-    <artifactId>org.wso2.carbon.extension.identity.authenticator.Clef</artifactId>
+    <artifactId>org.wso2.carbon.extension.identity.authenticator.clef</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon Extension - Clef Pom</name>

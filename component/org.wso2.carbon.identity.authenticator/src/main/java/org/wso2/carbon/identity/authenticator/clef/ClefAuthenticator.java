@@ -184,6 +184,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
                 requestType = ClefAuthenticatorConstants.CONNECT;
             }
             String clefLoginPage = ClefAuthenticatorConstants.CLEF_OAUTH_ENDPOINT;
+            Map<String, String> authenticatorProperties = authenticationContext.getAuthenticatorProperties();
+            String callbackurl = getCallbackUrl(authenticatorProperties);
             String queryParams = FrameworkUtils
                     .getQueryStringWithFrameworkContextId(authenticationContext.getQueryParams(),
                             authenticationContext.getCallerSessionKey(), authenticationContext
@@ -191,7 +193,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             httpServletResponse.sendRedirect(httpServletResponse.encodeRedirectURL(clefLoginPage
                     + ("?" + queryParams + "&" + OIDCAuthenticatorConstants.CLIENT_ID + "="
                     + authenticationContext.getAuthenticatorProperties().get(OIDCAuthenticatorConstants
-                    .CLIENT_ID)) + "&" + ClefAuthenticatorConstants.REQUEST_TYPE + "=" + requestType));
+                    .CLIENT_ID)) + "&" + ClefAuthenticatorConstants.REQUEST_TYPE + "=" + requestType
+                    + "&" + IdentityApplicationConstants.OAuth2.CALLBACK_URL + "=" + callbackurl));
             if (log.isDebugEnabled()) {
                 log.debug("Request send to " + clefLoginPage);
             }

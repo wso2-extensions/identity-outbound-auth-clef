@@ -48,15 +48,18 @@
             }
         }
     %>
+
     <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>WSO2 Identity Server</title>
+
         <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
         <link href="libs/bootstrap_3.3.5/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/Roboto.css" rel="stylesheet">
         <link href="css/custom-common.css" rel="stylesheet">
+
         <script src="js/scripts.js"></script>
         <script src="assets/js/jquery-1.7.1.min.js"></script>
         <!--[if lt IE 9]>
@@ -64,7 +67,9 @@
         <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
+
     <body onload="getLoginDiv()">
+
     <!-- header -->
     <header class="header header-default">
         <div class="container-fluid"><br></div>
@@ -78,10 +83,13 @@
             </div>
         </div>
     </header>
+
     <!-- page content -->
     <div class="container-fluid body-wrapper">
+
         <div class="row">
             <div class="col-md-12">
+
                 <!-- content -->
                 <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-4 col-centered wr-content wr-login col-centered">
                     <div>
@@ -94,17 +102,23 @@
          <div id="errorDiv"></div>
           <form id="pin_form" name="pin_form" action="../../commonauth"  method="POST">
                <div id="loginTable1" class="identity-box" >
+
+
             <%
                    String loginFailed = request.getParameter("authFailure");
                    if (loginFailed != null && "true".equals(loginFailed)) {
                String authFailureMsg = request.getParameter("authFailureMsg");
                if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                %>
+
+
       <% } }  %>
+
           <div class="row">
              <div class="span6">
                 <!-- Token Pin -->
                 <div class="control-group">
+
                 </div>
                  <div class='col-md-12 form-group'>
                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
@@ -116,25 +130,29 @@
                                        data-color="blue"
                                        data-style="flat"
                                        data-state="<%=request.getParameter("sessionDataKey")%>"
-                                       data-redirect-url="<%="https://localhost:8443/commonauth?
-                                       sessionDataKey="+URLEncoder.encode(request.getParameter("sessionDataKey"),"UTF-8")%>"
+                                       data-redirect-url="<%=request.getParameter("callbackUrl")+"?sessionDataKey="+URLEncoder.encode(request.getParameter("sessionDataKey"),"UTF-8")%>"
                                        data-type="<%=request.getParameter("Request_type")%>">
                                </script>
                                        </div>
                                </div>
                         </div>
+
                  </div>
                  </div>
                  </div>
                  </form>
+
                     </div>
                 </div>
                 <!-- /content -->
+
             </div>
         </div>
         <!-- /content/body -->
+
         </div>
     </div>
+
     <!-- footer -->
     <footer class="footer">
         <div class="container-fluid">
