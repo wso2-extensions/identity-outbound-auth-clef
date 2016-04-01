@@ -34,10 +34,6 @@ public class ClefAuthenticatorServiceComponent {
 
     private static Log log = LogFactory.getLog(ClefAuthenticatorServiceComponent.class);
 
-    /**
-     *
-     * @param componentContext
-     */
     protected void activate(ComponentContext componentContext) {
         ClefAuthenticator authenticator = new ClefAuthenticator();
         Hashtable<String, String> props = new Hashtable<>();
@@ -48,10 +44,6 @@ public class ClefAuthenticatorServiceComponent {
         }
     }
 
-    /**
-     *
-     * @param componentContext
-     */
     protected void deactivate(ComponentContext componentContext) {
         if (log.isDebugEnabled()) {
             log.debug("clef authenticator is deactivated");
