@@ -200,7 +200,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             }
             authenticationContext.setCurrentAuthenticator(getName());
         } catch (UserStoreException e) {
-            throw new AuthenticationFailedException("Error occured while loading user claim - "
+            throw new AuthenticationFailedException("Error occurred while loading user claim - "
                     + ClefAuthenticatorConstants.CLEF_ID, e);
         } catch (IOException e) {
             throw new AuthenticationFailedException(e.getMessage(), e);
@@ -311,7 +311,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * @param oAuthClientResponse oAuthResponse contain access token
      * @return user info
      */
-    private Map<String, Object> getUserClaims(OAuthClientResponse oAuthClientResponse) {
+    private Map<String, Object> getUserClaims(OAuthClientResponse oAuthClientResponse)
+            throws AuthenticationFailedException {
         try {
             String json = sendRequest(
                     ClefAuthenticatorConstants.CLEF_USERINFO_ENDPOINT,
@@ -324,9 +325,9 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
                     .valueOf(jsonObject.get(ClefAuthenticatorConstants.USER_INFO)));
             return jsonInfoObject;
         } catch (IOException e) {
-            log.error(e);
+            throw new AuthenticationFailedException("Error while sent the request to get user info", e);
+
         }
-        return new HashMap<String, Object>();
     }
 
     /**
@@ -371,10 +372,10 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             userStoreManager = (UserStoreManager) userRealm.getUserStoreManager();
         } catch (org.wso2.carbon.user.core.UserStoreException e) {
             throw new AuthenticationFailedException(
-                    "Error occured while loading user claim - http://wso2.org/claims/ClefId", e);
+                    "Error occurred while loading user claim" + ClefAuthenticatorConstants.CLEF_ID, e);
         } catch (UserStoreException e) {
             throw new AuthenticationFailedException(
-                    "Error occured while loading userrealm/userstoremanager", e);
+                    "Error occurred while loading userrealm or userstoremanager", e);
         }
         return userStoreManager;
     }
