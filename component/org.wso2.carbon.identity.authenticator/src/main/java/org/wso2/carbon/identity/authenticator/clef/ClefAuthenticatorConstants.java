@@ -38,5 +38,5 @@ class ClefAuthenticatorConstants {
     public static final String REQUEST_TYPE = "Request_type";
     public static final String LOGIN = "login";
     public static final String CONNECT = "connect";
-    public static final String DEFAULT="Default";
+    public static final String DEFAULT = "Default";
 }
