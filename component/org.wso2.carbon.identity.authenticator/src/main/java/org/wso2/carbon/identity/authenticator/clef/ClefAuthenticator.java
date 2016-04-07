@@ -253,7 +253,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
         } catch (OAuthProblemException e) {
             throw new AuthenticationFailedException("Exception while requesting code", e);
         }
-        if (!StringUtils.isEmpty(accessToken)) {
+        if (StringUtils.isNotEmpty(accessToken)) {
             Map<String, Object> userClaims = getUserClaims(oAuthResponse);
             if (userClaims != null && !userClaims.isEmpty()) {
                 try {
