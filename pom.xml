@@ -28,7 +28,7 @@
     </parent>
     <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
     <artifactId>org.wso2.carbon.extension.identity.authenticator.clef</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>WSO2 Carbon Extension - Clef Pom</name>
     <url>http://wso2.org</url>
@@ -137,6 +137,13 @@
             <version>${wso2.json}</version>
         </dependency>
     </dependencies>
+    <scm>
+        <connection>scm:git:https://github.com/wso2-extensions/identity-outbound-auth-clef.git</connection>
+        <url>https://github.com/wso2-extensions/identity-outbound-auth-clef.git</url>
+        <developerConnection>scm:git:https://github.com/wso2-extensions/identity-outbound-auth-clef.git
+        </developerConnection>
+        <tag>HEAD</tag>
+    </scm>
     <build>
         <extensions>
             <extension>
