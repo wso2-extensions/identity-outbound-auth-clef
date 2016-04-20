@@ -253,13 +253,13 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
         } catch (OAuthProblemException e) {
             throw new AuthenticationFailedException("Exception while requesting code", e);
         }
-        if (!StringUtils.isEmpty(accessToken)) {
+        if (StringUtils.isNotEmpty(accessToken)) {
             Map<String, Object> userClaims = getUserClaims(oAuthResponse);
             if (userClaims != null && !userClaims.isEmpty()) {
                 try {
                     UserStoreManager userStoreManager = getUserStoreManager(authenticationContext);
                     clefUserId = userStoreManager.getUserClaimValue(username, ClefAuthenticatorConstants.CLEF_ID, null);
-                    if (!StringUtils.isEmpty(clefUserId) && clefUserId.equals(String
+                    if (StringUtils.isNotEmpty(clefUserId) && clefUserId.equals(String
                             .valueOf(userClaims.get(ClefAuthenticatorConstants.ID)))) {
                         allowUser(userClaims, authenticationContext);
                     } else if (StringUtils.isEmpty(clefUserId)) {
@@ -317,7 +317,6 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
             return jsonInfoObject;
         } catch (IOException e) {
             throw new AuthenticationFailedException("Error while sent the request to get user info", e);
-
         }
     }
 

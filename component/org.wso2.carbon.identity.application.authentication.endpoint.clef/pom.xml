@@ -24,12 +24,6 @@
     <name>WSO2 Carbon - Identity Application Authentication Clef Endpoint</name>
     <description>Identity Application Authentication Clef Endpoint</description>
     <url>http://wso2.org</url>
-    <parent>
-        <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
-        <artifactId>org.wso2.carbon.extension.identity.authenticator.clef</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../pom.xml</relativePath>
-    </parent>
     <dependencies>
         <dependency>
             <groupId>commons-lang.wso2</groupId>

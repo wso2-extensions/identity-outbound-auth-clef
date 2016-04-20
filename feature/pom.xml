@@ -32,8 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>org.wso2.carbon.extension.identity.authenticator</groupId>
-            <artifactId>org.wso2.carbon.extension.identity.authenticator.clef.connector
-            </artifactId>
+            <artifactId>org.wso2.carbon.extension.identity.authenticator.clef.connector</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -56,10 +55,8 @@
                             <propertiesFile>feature.properties</propertiesFile>
                             <adviceFile>
                                 <properties>
-                                    <propertyDef>org.wso2.carbon.p2.category.type:server
-                                    </propertyDef>
-                                    <propertyDef>org.eclipse.equinox.p2.type.group:false
-                                    </propertyDef>
+                                    <propertyDef>org.wso2.carbon.p2.category.type:server</propertyDef>
+                                    <propertyDef>org.eclipse.equinox.p2.type.group:false</propertyDef>
                                 </properties>
                             </adviceFile>
                             <bundles>
