@@ -19,7 +19,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.extension.identity.authenticator.clef.connector</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Authenticator Library For Clef</name>
     <url>http://wso2.org</url>
@@ -124,17 +124,17 @@
                         </Private-Package>
                         <Export-Package>
                             !org.wso2.carbon.identity.authenticator.clef.internal,
-                            org.wso2.carbon.identity.authenticator.*
+                            org.wso2.carbon.identity.authenticator.*;version="${version}"
                         </Export-Package>
                         <Import-Package>
-                            javax.servlet; version=2.4.0,
-                            javax.servlet.http; version=2.4.0,
-                            org.wso2.carbon.base.*,
-                            org.wso2.carbon.user.core.*,
-                            org.apache.commons.logging.*; version="1.0.4",
-                            org.osgi.framework,
+                            org.apache.commons.logging.*;
+                            version="${commons-logging.osgi.version.range}",
+                            org.osgi.framework;version="${osgi.framework.imp.pkg.version.range}",
                             org.wso2.carbon.identity.application.authentication.framework.*,
-                            org.apache.oltu.oauth2.*; version="${oltu.package.import.version.range}",
+                            javax.servlet;version="${javax.servlet.version}",
+                            javax.servlet.http;version="${imp.pkg.version.javax.servlet}",
+                            org.apache.oltu.oauth2.*;
+                            version="${oltu.package.import.version.range}",
                             *;resolution:=optional
                         </Import-Package>
                     </instructions>
@@ -143,6 +143,9 @@
         </plugins>
     </build>
     <properties>
-        <oltu.package.import.version.range>[1.0.0, 2.0.0)</oltu.package.import.version.range>
+        <javax.servlet.version>2.4.0</javax.servlet.version>
+        <imp.pkg.version.javax.servlet>[2.6.0, 3.0.0)</imp.pkg.version.javax.servlet>
+        <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
     </properties>
 </project>

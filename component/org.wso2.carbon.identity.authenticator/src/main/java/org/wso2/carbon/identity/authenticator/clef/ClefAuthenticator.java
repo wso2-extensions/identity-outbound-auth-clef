@@ -59,16 +59,18 @@ import java.util.Map;
 
 /**
  * Authenticator of clef.
+ *
+ * @since 1.0.0
  */
 public class ClefAuthenticator extends OpenIDConnectAuthenticator implements FederatedApplicationAuthenticator {
 
     private static Log log = LogFactory.getLog(ClefAuthenticator.class);
 
     /**
-     * check and process the httpServletRequest to process.
+     * Check and process the httpServletRequest to process.
      *
-     * @param httpServletRequest http request
-     * @return weather true or false
+     * @param httpServletRequest http request.
+     * @return weather true or false.
      */
     public boolean canHandle(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getParameter(ClefAuthenticatorConstants.CODE) != null;
@@ -77,8 +79,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * Identify the context.
      *
-     * @param httpServletRequest http request
-     * @return context identifier
+     * @param httpServletRequest http request.
+     * @return context identifier.
      */
     public String getContextIdentifier(HttpServletRequest httpServletRequest) {
         return httpServletRequest.getParameter(ClefAuthenticatorConstants.SESSION_DATA_KEY);
@@ -109,7 +111,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     }
 
     /**
-     * Get the friendly name of the Authenticator
+     * Get the friendly name of the Authenticator.
      */
     @Override
     public String getFriendlyName() {
@@ -117,7 +119,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     }
 
     /**
-     * Get the name of the Authenticator
+     * Get the name of the Authenticator.
      */
     @Override
     public String getName() {
@@ -125,7 +127,7 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     }
 
     /**
-     * Get Configuration Properties
+     * Get Configuration Properties.
      */
     @Override
     public List<Property> getConfigurationProperties() {
@@ -160,9 +162,9 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
      * This is override because of some values are hard coded and input
      * values validations are not required.
      *
-     * @param httpServletRequest    http request
-     * @param httpServletResponse   http response
-     * @param authenticationContext authentication context
+     * @param httpServletRequest    http request.
+     * @param httpServletResponse   http response.
+     * @param authenticationContext authentication context.
      * @throws AuthenticationFailedException
      */
     @Override
@@ -208,9 +210,9 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * This is override because of we are working with claims.
      *
-     * @param httpServletRequest    http request
-     * @param httpServletResponse   http response
-     * @param authenticationContext authentication context
+     * @param httpServletRequest    http request.
+     * @param httpServletResponse   http response.
+     * @param authenticationContext authentication context.
      * @throws AuthenticationFailedException
      */
     @Override
@@ -282,8 +284,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * Allow user to login and set claims.
      *
-     * @param userClaims            user claims
-     * @param authenticationContext authentication context
+     * @param userClaims            user claims.
+     * @param authenticationContext authentication context.
      */
     private void allowUser(Map<String, Object> userClaims, AuthenticationContext authenticationContext) {
         AuthenticatedUser authenticatedUserObj;
@@ -300,8 +302,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * Get user information from user info endpoint.
      *
-     * @param oAuthClientResponse oAuthResponse contain access token
-     * @return user info
+     * @param oAuthClientResponse oAuthResponse contain access token.
+     * @return user info.
      */
     private Map<String, Object> getUserClaims(OAuthClientResponse oAuthClientResponse)
             throws AuthenticationFailedException {
@@ -323,8 +325,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * Get subject attributes.
      *
-     * @param claimMap Map<String, Object>
-     * @return attributes
+     * @param claimMap Map<String, Object>.
+     * @return attributes.
      */
     private Map<ClaimMapping, String> getSubjectAttributes(Map<String, Object> claimMap) {
         Map<ClaimMapping, String> claims = new HashMap<>();
@@ -343,8 +345,8 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     /**
      * Get user store manager.
      *
-     * @param authenticationContext authentication context
-     * @return user store manager
+     * @param authenticationContext authentication context.
+     * @return user store manager.
      * @throws AuthenticationFailedException
      */
     private UserStoreManager getUserStoreManager(AuthenticationContext authenticationContext)
@@ -369,9 +371,9 @@ public class ClefAuthenticator extends OpenIDConnectAuthenticator implements Fed
     }
 
     /**
-     * Get username
+     * Get username.
      *
-     * @param authenticationContext authentication context
+     * @param authenticationContext authentication context.
      * @return username
      */
     private AuthenticatedUser getUsername(AuthenticationContext authenticationContext) {

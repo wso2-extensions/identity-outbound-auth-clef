@@ -37,7 +37,7 @@ public class ClefAuthenticatorServiceComponent {
     /**
      * Activate component.
      *
-     * @param componentContext componentContext
+     * @param componentContext componentContext.
      */
     protected void activate(ComponentContext componentContext) {
         ClefAuthenticator authenticator = new ClefAuthenticator();
@@ -52,7 +52,7 @@ public class ClefAuthenticatorServiceComponent {
     /**
      * Deactivate component.
      *
-     * @param componentContext componentContext
+     * @param componentContext componentContext.
      */
     protected void deactivate(ComponentContext componentContext) {
         if (log.isDebugEnabled()) {
