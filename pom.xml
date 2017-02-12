@@ -40,6 +40,7 @@
                 <module>component/org.wso2.carbon.identity.application.authentication.endpoint.clef</module>
                 <module>component/org.wso2.carbon.identity.authenticator</module>
                 <module>feature</module>
+                <module>feature-repository</module>
             </modules>
         </profile>
     </profiles>
